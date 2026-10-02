@@ -2,7 +2,7 @@
 
 A small working API with its documentation rendered by [Scalar](https://scalar.com). Every endpoint in the docs is live, so **Test Request** on any page calls the real API and shows the real response.
 
-**Source:** [github.com/Timonwa/scalar-api-docs-demo](https://github.com/Timonwa/scalar-api-docs-demo)
+**Live docs:** [scalar-api-docs-demo.vercel.app/docs](https://scalar-api-docs-demo.vercel.app/docs) · **Source:** [github.com/Timonwa/scalar-api-docs-demo](https://github.com/Timonwa/scalar-api-docs-demo)
 
 ## What it shows
 
