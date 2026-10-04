@@ -18,11 +18,11 @@ pnpm install
 pnpm dev
 ```
 
-| URL                                                        | What it is                       |
-| ---------------------------------------------------------- | -------------------------------- |
-| [`/docs`](http://localhost:3000/docs)                      | the Scalar API reference         |
-| [`/docs/openapi.json`](http://localhost:3000/docs/openapi.json) | the OpenAPI document behind it   |
-| [`/api/v1/books`](http://localhost:3000/api/v1/books)      | the API itself                   |
+| URL                                                             | What it is                     |
+| --------------------------------------------------------------- | ------------------------------ |
+| [`/docs`](http://localhost:3000/docs)                           | the Scalar API reference       |
+| [`/docs/openapi.json`](http://localhost:3000/docs/openapi.json) | the OpenAPI document behind it |
+| [`/api/v1/books`](http://localhost:3000/api/v1/books)           | the API itself                 |
 
 ## How it fits together
 
@@ -41,10 +41,34 @@ To add an endpoint, write its handler under `src/app/api/v1/`, then register it 
 
 Data lives in memory. Writes work, but they reset when the server restarts, and on Vercel each serverless instance keeps its own copy.
 
-## Using Scalar with Laravel
+## Using Scalar with your own backend
 
-Scalar only needs an OpenAPI document, so the backend language does not matter. In Laravel, a package such as [Scramble](https://scramble.dedoc.co) generates the document from your routes and form requests, and Scalar's [Laravel package](https://github.com/scalar/laravel) (`composer require scalar/laravel`) serves the reference page. The sidebar folders come from the same `x-tagGroups` key shown in `src/docs/openapi.ts`.
+This demo happens to be Next.js, but Scalar does not care what your API is written in. All it needs is an OpenAPI document, so the same setup works for any backend:
+
+1. **Get an OpenAPI document.** Most frameworks have a package that generates one from your routes and validation rules, or you can write the YAML or JSON by hand.
+2. **Serve the reference.** Use Scalar's integration for your framework if there is one, or drop this HTML page anywhere and point it at your document:
+
+   ```html
+   <!doctype html>
+   <html>
+     <body>
+       <div id="app"></div>
+       <script src="https://cdn.jsdelivr.net/npm/@scalar/api-reference"></script>
+       <script>
+         Scalar.createApiReference("#app", { url: "/openapi.json" });
+       </script>
+     </body>
+   </html>
+   ```
+
+3. **Add folders and guides.** Put `x-tagGroups` in the document to group tags into sidebar folders, and write headings in `info.description` to get guide pages. `src/docs/openapi.ts` shows both.
+
+**Test Request** works wherever the browser can reach your API. If the docs and the API are on different domains, the API has to allow the docs' origin through CORS.
 
 ## Deploy
 
 Import the repository in [Vercel](https://vercel.com/new), or run `vercel` from this folder. It needs no environment variables.
+
+## License
+
+[MIT](LICENSE)
